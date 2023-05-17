@@ -1,4 +1,5 @@
 ﻿using GrooveHT.Server.Data;
+using GrooveHT.Server.Models;
 using GrooveHT.Shared.Models.Habit;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,12 @@ namespace GrooveHT.Server.Services.Habit
 
         public async Task<bool> CreateHabitAsync(HabitCreate model)
         {
-            var habit = new Habit
+            var entity = new HabitEntity
             {
                 HabitTitle = model.HabitTitle,
                 Description = model.Description,
             };
-            _context.Habits.Add(habit);
+            _context.Habits.Add(entity);
             var numberOfChanges = await _context.SaveChangesAsync();
             return numberOfChanges == 1;
         }

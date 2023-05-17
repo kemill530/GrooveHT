@@ -1,11 +1,12 @@
 ﻿using GrooveHT.Server.Data;
+using GrooveHT.Server.Models;
 using GrooveHT.Shared.Models.Profile;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GrooveHT.Server.Services.Profile
 {
-    public class ProfileService
+    public class ProfileService : IProfileService
     {
         private readonly ApplicationDbContext _context;
         public ProfileService(ApplicationDbContext context)
@@ -14,7 +15,7 @@ namespace GrooveHT.Server.Services.Profile
         }
         public async Task<bool> CreateProfileAsync(ProfileCreate model)
         {
-            var profile = new Profile
+            var entity = new ProfileEntity
             {
                 UserName = model.UserName,
                 Email = model.Email,
@@ -22,10 +23,10 @@ namespace GrooveHT.Server.Services.Profile
                 LastName = model.LastName,
             };
 
-            var passwordHasher = new PasswordHasher<Profile>();
-            profile.Password = passwordHasher.HashPassword(profile, model.Password);
+            var passwordHasher = new PasswordHasher<ProfileEntity>();
+            entity.Password = passwordHasher.HashPassword(entity, model.Password);
 
-            _context.Profiles.Add(profile);
+            _context.Profiles.Add(entity);
             var numberOfChanges = await _context.SaveChangesAsync();
             return numberOfChanges == 1;
         }
@@ -74,7 +75,7 @@ namespace GrooveHT.Server.Services.Profile
             entity.FirstName = model.FirstName;
             entity.LastName = model.LastName;
 
-            var passwordHasher = new PasswordHasher<Profile>();
+            var passwordHasher = new PasswordHasher<ProfileEntity>();
             entity.Password = passwordHasher.HashPassword(entity, model.Password);
 
             return await _context.SaveChangesAsync() == 1;

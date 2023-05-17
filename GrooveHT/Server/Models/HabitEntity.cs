@@ -2,7 +2,7 @@
 
 namespace GrooveHT.Server.Models
 {
-    public class Habit
+    public class HabitEntity
     {
         [Key]
         public int Id { get; set; }

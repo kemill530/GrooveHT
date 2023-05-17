@@ -1,0 +1,42 @@
+﻿@page "/Habit/Index"
+@using GrooveHT.Shared.Models.Habit
+@using Microsoft.AspNetCore.Authorization;
+@inject HttpClient Http
+@attribute [Authorize]
+
+<h3>Habits</h3>
+
+<a href="/habit/create">Create a habit</a>
+
+@if (habits == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Habit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(HabitListItem habit in habits)
+            {
+                <tr>@habit.Id</tr>
+                <tr>@habit.HabitTitle</tr>
+            }
+        </tbody>
+    </table>
+    
+}
+
+@code {
+    private List<HabitListItem> habits = new List<HabitListItem>();
+    protected override async Task OnInitializedAsync()
+    {
+        habits = await Http.GetFromJsonAsync<List<HabitListItem>>("Habit");
+    }
+
+}

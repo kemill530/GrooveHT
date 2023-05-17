@@ -1,6 +1,9 @@
+using Duende.IdentityServer.AspNetIdentity;
 using GrooveHT.Server.Data;
 using GrooveHT.Server.Models;
+using GrooveHT.Server.Services.Configuration;
 using GrooveHT.Server.Services.Habit;
+using GrooveHT.Server.Services.Profile;
 using GrooveHT.Server.Services.Tracker;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.ResponseCompression;

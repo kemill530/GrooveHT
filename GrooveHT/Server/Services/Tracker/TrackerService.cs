@@ -1,10 +1,11 @@
 ﻿using GrooveHT.Server.Data;
+using GrooveHT.Server.Models;
 using GrooveHT.Shared.Models.Tracker;
 using Microsoft.EntityFrameworkCore;
 
 namespace GrooveHT.Server.Services.Tracker
 {
-    public class TrackerService
+    public class TrackerService : ITrackerService
     {
         private readonly ApplicationDbContext _context;
         public TrackerService(ApplicationDbContext context)
@@ -14,13 +15,13 @@ namespace GrooveHT.Server.Services.Tracker
 
         public async Task<bool> CreateTrackerAsync(TrackerCreate model)
         {
-            var tracker = new Tracker
+            var entity = new TrackerEntity
             {
                 ConfigId = model.ConfigId,
                 TaskCompleted = false,
                 Notes = model.Notes,
             };
-            _context.Trackers.Add(tracker);
+            _context.Trackers.Add(entity);
             var numberOfChanges = await _context.SaveChangesAsync();
             return numberOfChanges == 1;
         }

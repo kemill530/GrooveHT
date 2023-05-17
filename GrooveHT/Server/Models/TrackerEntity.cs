@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GrooveHT.Server.Models
 {
-    public class Tracker
+    public class TrackerEntity
     {
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(Configuration))]
+        [ForeignKey(nameof(ConfigurationEntity))]
         public int ConfigId { get; set; }
-        public virtual Configuration Configuration { get; set; }
+        public virtual ConfigurationEntity ConfigurationEntity { get; set; }
 
         [Required]
         public bool TaskCompleted { get; set; }

@@ -1,4 +1,5 @@
 ﻿using GrooveHT.Server.Data;
+using GrooveHT.Server.Models;
 using GrooveHT.Shared.Models.Configuration;
 using Microsoft.EntityFrameworkCore;
 using static GrooveHT.Server.Services.Configuration.ConfigurationService;
@@ -18,12 +19,12 @@ namespace GrooveHT.Server.Services.Configuration
         //public void SetUserId(string userId) => _userId = userId;
         public async Task<bool> CreateConfigurationAsync(ConfigurationCreate model)
         {
-            var configuration = new Configuration
+            var entity = new ConfigurationEntity
             {
                 HabitId = model.HabitId,
                 StartDate = DateTime.Now,
             };
-            _context.Configurations.Add(configuration);
+            _context.Configurations.Add(entity);
             var numberOfChanges = await _context.SaveChangesAsync();
             return numberOfChanges == 1;
         }

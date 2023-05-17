@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GrooveHT.Server.Models
 {
-    public class Profile
+    public class ProfileEntity
     {
 
         [Key]
@@ -23,9 +23,9 @@ namespace GrooveHT.Server.Models
         [Required]
         public string Password { get; set; }
 
-        [ForeignKey(nameof(Tracker))]
+        [ForeignKey(nameof(TrackerEntity))]
         public int InProgress { get; set; }
-        public virtual Tracker Tracker { get; set; }
+        public virtual TrackerEntity TrackerEntity { get; set; }
 
     }
 }
