@@ -1,0 +1,69 @@
+﻿@*@page "/configuration/create"
+@using GrooveHT.Shared.Models.Configuration
+@using GrooveHT.Shared.Models.Habit
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Create</h3>
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+
+@if (habits == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <div class="container">
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label>Id</label>
+                <InputText class="form-control" @bind-Value="model.Id" />
+            </div>
+     <div class="form-group">
+        <label>Habit</label>
+        <InputTextArea class="form-control" @bind-Value="model.HabitId" />
+      </div>
+            <InputSelect class="form-control" @bind-Value="model.HabitId">
+                @foreach (var habit in habits)
+                {
+                    <option value="habit.Id">@habit.Name</option>
+                }
+            </InputSelect>
+
+            <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        </EditForm>
+    </div>
+}
+
+@code {
+    private ConfigurationCreate model = new();
+    private IEnumerable<ConfigurationListItem> configurations;
+    private string errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        configurations = await http.GetFromJsonAsync<IEnumerable<ConfigurationListItem>>("/api/configuration/");
+    }
+
+    private async void HandleSubmit()
+    {
+        var createRes = await http.PostAsJsonAsync<ConfigurationCreate>("/api/configuration", model);
+        if (createRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/configuration");
+        }
+        else
+        {
+            errorMessage = "Could not create your configuration right now. Please try again later.";
+        }
+    }
+}
+*@

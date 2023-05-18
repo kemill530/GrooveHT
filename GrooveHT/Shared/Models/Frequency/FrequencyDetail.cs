@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GrooveHT.Shared.Models.Habit
+namespace GrooveHT.Shared.Models.Frequency
 {
-    public class HabitListItem
+    public class FrequencyDetail
     {
         public int Id { get; set; }
-
-        public string HabitTitle { get; set; }
-        public string Description { get; set; }
+        public string Frequency { get; set; }
     }
 }

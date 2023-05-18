@@ -19,6 +19,10 @@
             <label>Name</label>
             <InputText class="form-control" @bind-Value="model.HabitTitle" />
         </div>
+        <div class="form-group">
+            <label>Description</label>
+            <InputText class="form-control" @bind-Value="model.Description" />
+        </div>
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
         
     </EditForm>
@@ -31,11 +35,11 @@
         var createRes = await Http.PostAsJsonAsync<HabitCreate>("/api/habit", model);
         if (createRes.IsSuccessStatusCode)
         {
-            navigation.NavigateTo("/habit");
+            navigation.NavigateTo("/api/habit");
         }
         else
         {
-            errorMessage = "Could not create your habit right now. Please tray again later.";
+            errorMessage = "Could not create your habit right now. Please try again later.";
         }
     }
 

@@ -33,7 +33,8 @@ namespace GrooveHT.Server.Services.Habit
                     new HabitListItem
                     {
                         Id = entity.Id,
-                        HabitTitle = entity.HabitTitle
+                        HabitTitle = entity.HabitTitle,
+                        Description = entity.Description
                     });
             return await habitQuery.ToListAsync();
         }

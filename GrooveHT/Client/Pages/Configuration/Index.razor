@@ -1,0 +1,46 @@
+﻿@page "/configuration"
+@using GrooveHT.Shared.Models.Configuration
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
+
+<h3>Let's Configure your Habit</h3>
+<a href="/configuration/create">Create a Configuration</a>
+
+@if (_configurations == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Configuration</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var configuration in _configurations)
+            {
+                <tr>
+                    <td><strong>@configuration.Id</strong></td>
+                    <td>
+                        <a href=@($"configuration/{configuration.Id}")>Details</a>
+                        <a href=@($"configuration/edit/{configuration.Id}")>Edit</a>
+                        <a href=@($"configuration/delete/{configuration.Id}")>Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private IEnumerable<ConfigurationListItem> _configurations;
+    protected override async Task OnInitializedAsync()
+    {
+        _configurations = await http.GetFromJsonAsync<List<ConfigurationListItem>>("/api/configuration");
+    }
+}

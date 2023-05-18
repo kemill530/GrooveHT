@@ -9,7 +9,6 @@ namespace GrooveHT.Shared.Models.Configuration
     public class ConfigurationCreate
     {
         public int HabitId { get; set; }
-        public string FrequencyAsString { get; set; }
         public DateTime StartDate { get; set; }
 
     }
