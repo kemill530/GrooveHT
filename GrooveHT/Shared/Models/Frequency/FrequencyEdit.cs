@@ -9,7 +9,7 @@ namespace GrooveHT.Shared.Models.Frequency
 {
     public class FrequencyEdit
     {
-        [Required]
+        public int Id { get; set; }
         public string Frequency { get; set; }
     }
 }

@@ -1,6 +1,7 @@
-﻿@*@page "/configuration/create"
+﻿@page "/configuration/create"
 @using GrooveHT.Shared.Models.Configuration
 @using GrooveHT.Shared.Models.Habit
+@using GrooveHT.Shared.Models.Frequency
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
 @inject HttpClient http
@@ -11,51 +12,58 @@
 {
     <h5 class="text-danger">@errorMessage</h5>
 }
-
 @if (habits == null)
 {
-    <p><em>Loading...</em></p>
-}
+    <p><em>>Loading...</em></p>
+} 
 else
 {
 
-    <div class="container">
-        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-            <div class="form-group">
-                <label>Id</label>
-                <InputText class="form-control" @bind-Value="model.Id" />
-            </div>
-     <div class="form-group">
-        <label>Habit</label>
-        <InputTextArea class="form-control" @bind-Value="model.HabitId" />
-      </div>
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+            <label>Choose your Habit</label>
             <InputSelect class="form-control" @bind-Value="model.HabitId">
                 @foreach (var habit in habits)
                 {
-                    <option value="habit.Id">@habit.Name</option>
+                    <option value="@habit.Id">@habit.HabitTitle</option>
                 }
             </InputSelect>
 
-            <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
-        </EditForm>
-    </div>
+            <label>Choose your frequency</label>
+            <InputSelect class="form-control" @bind-Value="model.FrequencyId">
+                @foreach (var frequency in frequencies)
+                {
+                    <option value="@frequency.Id">@frequency.Frequency</option>
+                }
+            </InputSelect>
+            
+            <label>Start Date</label>
+            <InputDate class="form-control" @bind-Value="model.StartDate" />
+
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+    </EditForm>
+</div>
 }
 
 @code {
     private ConfigurationCreate model = new();
-    private IEnumerable<ConfigurationListItem> configurations;
+    private IEnumerable<HabitListItem> habits;
+    private IEnumerable<FrequencyListItem> frequencies;
     private string errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
-        configurations = await http.GetFromJsonAsync<IEnumerable<ConfigurationListItem>>("/api/configuration/");
+        habits = await http.GetFromJsonAsync<IEnumerable<HabitListItem>>("/habit/");
+
+        frequencies = await http.GetFromJsonAsync<IEnumerable<FrequencyListItem>>("/frequency/");
+
     }
 
     private async void HandleSubmit()
     {
-        var createRes = await http.PostAsJsonAsync<ConfigurationCreate>("/api/configuration", model);
+        var createRes = await http.PostAsJsonAsync<ConfigurationCreate>("/configuration", model);
         if (createRes.IsSuccessStatusCode)
         {
             navigation.NavigateTo("/configuration");
@@ -66,4 +74,3 @@ else
         }
     }
 }
-*@

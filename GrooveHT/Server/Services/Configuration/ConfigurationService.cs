@@ -22,6 +22,7 @@ namespace GrooveHT.Server.Services.Configuration
             var entity = new ConfigurationEntity
             {
                 HabitId = model.HabitId,
+                FrequencyId = model.FrequencyId,
                 StartDate = DateTime.Now,
             };
             _context.Configurations.Add(entity);
@@ -55,6 +56,7 @@ namespace GrooveHT.Server.Services.Configuration
             {
                 Id = entity.Id,
                 HabitId = entity.HabitId,
+                FrequencyId = entity.FrequencyId,
                 StartDate = entity.StartDate,
             };
 
@@ -66,6 +68,7 @@ namespace GrooveHT.Server.Services.Configuration
             if (model == null) return false;
             var entity = await _context.Configurations.FindAsync(model);
             entity.HabitId = model.HabitId;
+            entity.FrequencyId = model.FrequencyId;
             entity.StartDate = model.StartDate;
 
             return await _context.SaveChangesAsync() == 1;

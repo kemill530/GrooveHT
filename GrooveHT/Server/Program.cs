@@ -2,6 +2,7 @@ using Duende.IdentityServer.AspNetIdentity;
 using GrooveHT.Server.Data;
 using GrooveHT.Server.Models;
 using GrooveHT.Server.Services.Configuration;
+using GrooveHT.Server.Services.Frequency;
 using GrooveHT.Server.Services.Habit;
 using GrooveHT.Server.Services.Profile;
 using GrooveHT.Server.Services.Tracker;
@@ -32,6 +33,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<ITrackerService, TrackerService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IHabitService, HabitService>();
+builder.Services.AddScoped<IFrequencyService, FrequencyService>();
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 
 var app = builder.Build();

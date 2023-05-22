@@ -32,10 +32,10 @@
     private string errorMessage;
     private async void HandleSubmit()
     {
-        var createRes = await Http.PostAsJsonAsync<HabitCreate>("/api/habit", model);
+        var createRes = await Http.PostAsJsonAsync<HabitCreate>("/habit", model);
         if (createRes.IsSuccessStatusCode)
         {
-            navigation.NavigateTo("/api/habit");
+            navigation.NavigateTo("/habit");
         }
         else
         {

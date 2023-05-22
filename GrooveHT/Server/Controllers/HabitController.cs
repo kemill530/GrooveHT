@@ -15,10 +15,10 @@ namespace GrooveHT.Server.Controllers
             _habitService = habitService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<List<HabitListItem>> Index()
         {
             var habits = await _habitService.GetAllHabitsAsync();
-            return Ok(habits);
+            return habits.ToList();
         }
 
         [HttpGet("{id}")]

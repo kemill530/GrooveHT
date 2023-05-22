@@ -11,7 +11,11 @@ namespace GrooveHT.Server.Models
         [ForeignKey(nameof(HabitEntity))]
         public int HabitId { get; set; }
         public virtual HabitEntity HabitEntity { get; set; }
-       
+
+        [ForeignKey(nameof(FrequencyEntity))]
+        public int FrequencyId { get; set; }
+        public virtual FrequencyEntity FrequencyEntity { get; set; }
+
         [Required]
         public DateTime StartDate { get; set; }
     }

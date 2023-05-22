@@ -10,6 +10,7 @@ namespace GrooveHT.Shared.Models.Configuration
     {
         public int Id { get; set; }
         public int HabitId { get; set; }
+        public int FrequencyId { get; set; }
         public DateTime StartDate { get; set; }
     }
 }

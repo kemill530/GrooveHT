@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GrooveHT.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProfileController : ControllerBase
     {
@@ -16,10 +16,10 @@ namespace GrooveHT.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProfilesAsync()
+        public async Task<List<ProfileListItem>> GetAllProfilesAsync()
         {
             var profiles = await _profileService.GetAllProfilesAsync();
-            return Ok(profiles);
+            return profiles.ToList();
         }
 
         [HttpGet("{id}")]

@@ -1,7 +1,6 @@
 ﻿using GrooveHT.Server.Data;
 using GrooveHT.Server.Models;
 using GrooveHT.Shared.Models.Frequency;
-using GrooveHT.Shared.Models.Habit;
 using Microsoft.EntityFrameworkCore;
 
 namespace GrooveHT.Server.Services.Frequency

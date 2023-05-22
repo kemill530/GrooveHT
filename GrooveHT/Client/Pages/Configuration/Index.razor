@@ -41,6 +41,6 @@ else
     private IEnumerable<ConfigurationListItem> _configurations;
     protected override async Task OnInitializedAsync()
     {
-        _configurations = await http.GetFromJsonAsync<List<ConfigurationListItem>>("/api/configuration");
+        _configurations = await http.GetFromJsonAsync<List<ConfigurationListItem>>("/configuration");
     }
 }
