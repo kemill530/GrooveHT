@@ -4,6 +4,7 @@ using GrooveHT.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GrooveHT.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230518144353_PagesTestout")]
+    partial class PagesTestout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,43 +238,17 @@ namespace GrooveHT.Server.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("FrequencyId")
-                        .HasColumnType("int");
-
                     b.Property<int>("HabitId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FrequencyId");
 
                     b.HasIndex("HabitId");
 
                     b.ToTable("Configurations");
-                });
-
-            modelBuilder.Entity("GrooveHT.Server.Models.FrequencyEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Frequency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Frequencies");
                 });
 
             modelBuilder.Entity("GrooveHT.Server.Models.HabitEntity", b =>
@@ -498,19 +474,11 @@ namespace GrooveHT.Server.Data.Migrations
 
             modelBuilder.Entity("GrooveHT.Server.Models.ConfigurationEntity", b =>
                 {
-                    b.HasOne("GrooveHT.Server.Models.FrequencyEntity", "FrequencyEntity")
-                        .WithMany()
-                        .HasForeignKey("FrequencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GrooveHT.Server.Models.HabitEntity", "HabitEntity")
                         .WithMany()
                         .HasForeignKey("HabitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("FrequencyEntity");
 
                     b.Navigation("HabitEntity");
                 });

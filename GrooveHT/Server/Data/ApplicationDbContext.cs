@@ -13,5 +13,10 @@ namespace GrooveHT.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+        public DbSet<ConfigurationEntity> Configurations { get; set; }
+        public DbSet<FrequencyEntity> Frequencies { get; set; }
+        public DbSet<HabitEntity> Habits { get; set; }
+        public DbSet<ProfileEntity> Profiles { get; set; }
+        public DbSet<TrackerEntity> Trackers { get; set; }
     }
 }

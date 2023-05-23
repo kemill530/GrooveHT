@@ -1,0 +1,48 @@
+﻿@page "/tracker"
+@using GrooveHT.Shared.Models.Tracker
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
+
+<h3>Tracker</h3>
+
+<a href="/tracker/create">Create a Tracker</a>
+
+@if (_trackers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tracker</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+    </table>
+    <tbody>
+        @foreach (var tracker in _trackers)
+        {
+            <tr>
+                <td><strong>@tracker.Id</strong></td>
+                <td>
+                    <a href=@($"tracker/{tracker.Id}")>Details</a>
+                    <a href=@($"tracker/edit/{tracker.Id}")>Edit</a>
+                    <a href=@($"tracker/delete/{tracker.Id}")>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+}
+
+@code {
+    private IEnumerable<TrackerListItem> _trackers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _trackers = await http.GetFromJsonAsync<List<TrackerListItem>>("tracker");
+    }
+
+}

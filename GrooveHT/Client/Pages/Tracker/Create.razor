@@ -1,0 +1,57 @@
+﻿@page "/tracker/create"
+@attribute [Authorize]
+@inject HttpClient Http
+@using GrooveHT.Shared.Models.Configuration;
+@using GrooveHT.Shared.Models.Tracker
+@using Microsoft.AspNetCore.Authorization;
+@inject NavigationManager navigation
+
+<h3>Tracker</h3>
+
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label>Configuration</label>
+        <InputSelect class="form-control" @bind-Value="model.ConfigId">
+            @foreach (var configuration in configurations)
+            {
+                <option value="@configuration.Id">@configuration.Name</option>
+            }
+        </InputSelect>
+        @*<div class="form-group">
+            <label>Description</label>
+            <InputText class="form-control" @bind-Value="model.Description" />
+        </div>*@
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+
+    </EditForm>
+</div>
+
+@code {
+    private TrackerCreate model = new();
+    private IEnumerable<ConfigurationListItem> configurations;
+    private string errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        configurations = await Http.GetFromJsonAsync<IEnumerable<ConfigurationListItem>>("/configuration/");
+    }
+
+    private async void HandleSubmit()
+    {
+        var createdRes = await Http.PostAsJsonAsync<TrackerCreate>("/tracker", model);
+        if (createdRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/tracker");
+        }
+        else
+        {
+            errorMessage = "Could not create your tracker right now. Please try again later.";
+        }
+    }  
+}

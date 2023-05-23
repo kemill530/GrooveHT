@@ -1,0 +1,42 @@
+﻿@page "/frequency"
+@using GrooveHT.Shared.Models.Frequency
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
+
+<h3>Frequencies</h3>
+<a href="/frequency/create">Create a new frequency type</a>
+
+@if (_frequencies == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Frequency</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (FrequencyListItem frequency in _frequencies)
+            {
+                <tr>
+                    <td>@frequency.Id</td>
+                    <td>@frequency.Frequency</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private IEnumerable<FrequencyListItem> _frequencies;
+    protected override async Task OnInitializedAsync()
+    {
+        _frequencies = await http.GetFromJsonAsync<List<FrequencyListItem>>("/frequency");
+    }
+}
