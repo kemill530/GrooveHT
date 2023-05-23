@@ -1,0 +1,82 @@
+﻿@page "/configuration/edit/{Id:int}"
+@using GrooveHT.Shared.Models.Configuration;
+@using GrooveHT.Shared.Models.Frequency;
+@using GrooveHT.Shared.Models.Habit;
+@using GrooveHT.Shared.Models.Tracker;
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Edit Configuration: @model.Name</h3>
+@if (errorMessage != null)
+{
+        <h5 class="text-danger">@errorMessage</h5>
+}
+@if (habits == null)
+{
+        <p><em>>Loading...</em></p>
+}
+else
+{
+    <div class="container">
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+                <div class="form-group">
+                    <label>Name this configuration</label>
+                    <InputText class="form-control" @bind-Value="model.Name" />
+                </div>
+                <label>Choose your Habit</label>
+                <InputSelect class="form-control" @bind-Value="model.HabitId">
+                @foreach (var habit in habits)
+                {
+                            <option value="@habit.Id">@habit.HabitTitle</option>
+                }
+                </InputSelect>
+
+                <label>Choose your frequency</label>
+                <InputSelect class="form-control" @bind-Value="model.FrequencyId">
+                @foreach (var frequency in frequencies)
+                {
+                            <option value="@frequency.Id">@frequency.Frequency</option>
+                }
+                </InputSelect>
+
+                <label>Start Date</label>
+                <InputDate class="form-control" @bind-Value="model.StartDate" />
+
+            <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        </EditForm>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int Id{ get; set; }
+    private ConfigurationEdit model { get; set; }
+    private IEnumerable<HabitListItem> habits { get; set; }
+    private IEnumerable<FrequencyListItem> frequencies { get; set; }
+    private string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        model = await http.GetFromJsonAsync<ConfigurationEdit>($"/configuration/{Id}");
+        habits = await http.GetFromJsonAsync<IEnumerable<HabitListItem>>("habit");
+        frequencies = await http.GetFromJsonAsync<IEnumerable<FrequencyListItem>>("frequency");
+    }
+
+    private async void HandleSubmit()
+    {
+        var createRes = await http.PutAsJsonAsync<ConfigurationEdit>($"/configuration/edit/{Id}", model);
+        if (createRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo($"/configuration/{Id}");
+        }
+        else
+        {
+            errorMessage = "Could not update your configuration right now. Please try again later.";
+        }
+    }
+}

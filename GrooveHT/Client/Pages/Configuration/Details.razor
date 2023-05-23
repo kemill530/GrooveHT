@@ -1,0 +1,48 @@
+﻿@page "/configuration/{Id:int}"
+@using GrooveHT.Shared.Models.Configuration
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
+
+<h3>@Name Details</h3>
+0
+@if (Configuration != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <span>Configuration #@Configuration.Id</span>
+                <span class="text-muted"><strong>@Configuration.Name</strong></span>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">@Configuration.HabitId</h4>
+                <p class="card-text">@Configuration.FrequencyId</p>
+            </div>
+            <div class="card-footer text-muted d-flex justify-content-between">
+                <span class="text-left">Starting Date: @Configuration.StartDate</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <div class="text-center justify-content-between w-25">
+                <a href=@($"/configuration/edit/{Id}") class="btn btn-outline-primary">Edit</a>
+                <a href=@($"/configuration/delete/{Id}") class="btn btn-outline-danger">Delete</a>
+                <hr />
+                <a href="/configuration">Back to Configuration Index</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public ConfigurationDetail Configuration { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Configuration = await http.GetFromJsonAsync<ConfigurationDetail>($"/configuration/{Id}");
+    }
+}

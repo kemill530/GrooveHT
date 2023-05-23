@@ -42,7 +42,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _trackers = await http.GetFromJsonAsync<List<TrackerListItem>>("/tracker");
+        _trackers = await http.GetFromJsonAsync<List<TrackerListItem>>("tracker");
     }
 
 }

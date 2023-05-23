@@ -18,11 +18,14 @@
 } 
 else
 {
-
 <div class="container">
     <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
+            <div class="form-group">
+                <label>Name this configuration</label>
+                <InputText class="form-control" @bind-Value="model.Name" />
+            </div>
             <label>Choose your Habit</label>
             <InputSelect class="form-control" @bind-Value="model.HabitId">
                 @foreach (var habit in habits)

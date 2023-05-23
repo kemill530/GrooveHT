@@ -9,6 +9,7 @@ namespace GrooveHT.Shared.Models.Configuration
     public class ConfigurationListItem
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public int HabitId { get; set; }
     }
 }
