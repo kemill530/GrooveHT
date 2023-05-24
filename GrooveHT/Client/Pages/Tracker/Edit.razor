@@ -1,13 +1,11 @@
-﻿@page "/api/tracker/create"
-@attribute [Authorize]
-@inject HttpClient Http
-@using GrooveHT.Shared.Models.Configuration;
+﻿@page "/api/tracker/edit/{Id:int}"
 @using GrooveHT.Shared.Models.Tracker
 @using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
 @inject NavigationManager navigation
 
-<h3>Tracker</h3>
-
+<h3>TRACKER EDIT: Tracker @model.ConfigId</h3>
 @if (errorMessage != null)
 {
     <h5 class="text-danger">@errorMessage</h5>
@@ -16,31 +14,33 @@
     <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <label>Configuration</label>
+        <label>Tracker</label>
         <InputSelect class="form-control" @bind-Value="model.ConfigId">
-            @foreach (var configuration in configurations)
+            @foreach (var tracker in trackers)
             {
-                <option value="@configuration.Id">@configuration.Name</option>
+                <option value="@tracker.Id">@tracker.ConfigId</option>
             }
         </InputSelect>
-        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        <button type="submit" class="btn btn-primary btn-block mt-5"></button>
 
     </EditForm>
 </div>
+    
+
 
 @code {
     private TrackerCreate model = new();
-    private IEnumerable<ConfigurationListItem> configurations;
+    private IEnumerable<TrackerListItem> trackers;
     private string errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
-        configurations = await Http.GetFromJsonAsync<IEnumerable<ConfigurationListItem>>("/api/configuration/");
+        trackers = await http.GetFromJsonAsync<IEnumerable<TrackerListItem>>("/api/tracker/");
     }
 
     private async void HandleSubmit()
     {
-        var createdRes = await Http.PostAsJsonAsync<TrackerCreate>("/api/tracker", model);
+        var createdRes = await http.PostAsJsonAsync<TrackerCreate>("/api/tracker", model);
         if (createdRes.IsSuccessStatusCode)
         {
             navigation.NavigateTo("/api/tracker");
@@ -49,5 +49,5 @@
         {
             errorMessage = "Could not create your tracker right now. Please try again later.";
         }
-    }  
+    }
 }

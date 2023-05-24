@@ -1,4 +1,4 @@
-﻿@page "/configuration/edit/{Id:int}"
+﻿@page "/api/configuration/edit/{Id:int}"
 @using GrooveHT.Shared.Models.Configuration;
 @using GrooveHT.Shared.Models.Frequency;
 @using GrooveHT.Shared.Models.Habit;
@@ -15,7 +15,7 @@
 }
 @if (habits == null)
 {
-        <p><em>>Loading...</em></p>
+        <p><em>Loading...</em></p>
 }
 else
 {
@@ -62,17 +62,17 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        model = await http.GetFromJsonAsync<ConfigurationEdit>($"/configuration/{Id}");
-        habits = await http.GetFromJsonAsync<IEnumerable<HabitListItem>>("habit");
-        frequencies = await http.GetFromJsonAsync<IEnumerable<FrequencyListItem>>("frequency");
+        model = await http.GetFromJsonAsync<ConfigurationEdit>($"/api/configuration/{Id}");
+        habits = await http.GetFromJsonAsync<IEnumerable<HabitListItem>>("/api/habit");
+        frequencies = await http.GetFromJsonAsync<IEnumerable<FrequencyListItem>>("/api/frequency");
     }
 
     private async void HandleSubmit()
     {
-        var createRes = await http.PutAsJsonAsync<ConfigurationEdit>($"/configuration/edit/{Id}", model);
+        var createRes = await http.PutAsJsonAsync<ConfigurationEdit>($"/api/configuration/edit/{Id}", model);
         if (createRes.IsSuccessStatusCode)
         {
-            navigation.NavigateTo($"/configuration/{Id}");
+            navigation.NavigateTo($"/api/configuration/{Id}");
         }
         else
         {

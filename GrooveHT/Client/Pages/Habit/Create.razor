@@ -1,4 +1,4 @@
-﻿@page "/habit/create"
+﻿@page "/api/habit/create"
 @attribute [Authorize]
 @inject HttpClient Http
 @using GrooveHT.Shared.Models.Habit
@@ -32,10 +32,10 @@
     private string errorMessage;
     private async void HandleSubmit()
     {
-        var createRes = await Http.PostAsJsonAsync<HabitCreate>("/habit", model);
+        var createRes = await Http.PostAsJsonAsync<HabitCreate>("/api/habit", model);
         if (createRes.IsSuccessStatusCode)
         {
-            navigation.NavigateTo("/habit");
+            navigation.NavigateTo("/api/habit");
         }
         else
         {

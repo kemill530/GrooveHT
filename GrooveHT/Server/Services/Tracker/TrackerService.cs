@@ -19,7 +19,7 @@ namespace GrooveHT.Server.Services.Tracker
             {
                 ConfigId = model.ConfigId,
                 TaskCompleted = false,
-                Notes = model.Notes,
+                Notes = ""
             };
             _context.Trackers.Add(entity);
             var numberOfChanges = await _context.SaveChangesAsync();

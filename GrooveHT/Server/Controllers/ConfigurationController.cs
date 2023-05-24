@@ -1,18 +1,22 @@
 ﻿using GrooveHT.Server.Services.Configuration;
+using GrooveHT.Server.Services.Tracker;
 using GrooveHT.Shared.Models.Configuration;
+using GrooveHT.Shared.Models.Tracker;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GrooveHT.Server.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ConfigurationController : ControllerBase
     {
         private readonly IConfigurationService _configurationService;
-        public ConfigurationController(IConfigurationService configService)
+        private readonly ITrackerService _trackerService;
+        public ConfigurationController(IConfigurationService configService, ITrackerService trackerService)
         {
             _configurationService = configService;
+            _trackerService = trackerService;
         }
 
         [HttpGet]
@@ -34,8 +38,16 @@ namespace GrooveHT.Server.Controllers
         public async Task<IActionResult> Create(ConfigurationCreate model)
         {
             if (model == null) return BadRequest();
-            bool wasSuccessful = await _configurationService.CreateConfigurationAsync(model);
-            if (wasSuccessful) return Ok();
+            var response = await _configurationService.CreateConfigurationAsync(model);
+            if (response.IsSuccessful)
+            {
+                bool trackerCreated = await _trackerService.CreateTrackerAsync(new TrackerCreate() {ConfigId = response.CreatedConfigId});
+                if(trackerCreated)
+                {
+                    return Ok();
+                }
+                return Ok();
+            }
             else return UnprocessableEntity();
         }
 

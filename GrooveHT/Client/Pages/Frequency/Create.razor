@@ -1,4 +1,4 @@
-﻿@page "/frequency/create"
+﻿@page "/api/frequency/create"
 @using GrooveHT.Shared.Models.Frequency;
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
@@ -27,10 +27,10 @@
     private string errorMessage;
     private async void HandleSubmit()
     {
-        var createRes = await http.PostAsJsonAsync<FrequencyCreate>("/frequency", model);
+        var createRes = await http.PostAsJsonAsync<FrequencyCreate>("/api/frequency", model);
         if (createRes.IsSuccessStatusCode)
         {
-            navigation.NavigateTo("/frequency");
+            navigation.NavigateTo("/api/frequency");
         }
         else
         {

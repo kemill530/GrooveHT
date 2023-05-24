@@ -1,4 +1,4 @@
-﻿@page "/configuration/create"
+﻿@page "/api/configuration/create"
 @using GrooveHT.Shared.Models.Configuration
 @using GrooveHT.Shared.Models.Habit
 @using GrooveHT.Shared.Models.Frequency
@@ -58,22 +58,24 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        habits = await http.GetFromJsonAsync<IEnumerable<HabitListItem>>("/habit/");
+        habits = await http.GetFromJsonAsync<IEnumerable<HabitListItem>>("/api/habit/");
 
-        frequencies = await http.GetFromJsonAsync<IEnumerable<FrequencyListItem>>("/frequency/");
+        frequencies = await http.GetFromJsonAsync<IEnumerable<FrequencyListItem>>("/api/frequency/");
 
     }
 
     private async void HandleSubmit()
     {
-        var createRes = await http.PostAsJsonAsync<ConfigurationCreate>("/configuration", model);
+        var createRes = await http.PostAsJsonAsync<ConfigurationCreate>("/api/configuration", model);
         if (createRes.IsSuccessStatusCode)
         {
-            navigation.NavigateTo("/configuration");
+            navigation.NavigateTo("/api/tracker");
         }
         else
         {
             errorMessage = "Could not create your configuration right now. Please try again later.";
         }
     }
+
+    //public async Task CreateNewTracker()
 }

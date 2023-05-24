@@ -10,6 +10,8 @@ namespace GrooveHT.Shared.Models.Tracker
     {
         public int Id { get; set; }
         public int ConfigId { get; set; }
+        public string HabitName { get;set; }
+        public string Frequency { get;set; }
         public bool TaskCompleted { get; set; }
         public string Notes { get; set; }
     }

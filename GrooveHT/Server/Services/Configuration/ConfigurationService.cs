@@ -1,4 +1,5 @@
-﻿using GrooveHT.Server.Data;
+﻿using AutoMapper;
+using GrooveHT.Server.Data;
 using GrooveHT.Server.Models;
 using GrooveHT.Shared.Models.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +18,9 @@ namespace GrooveHT.Server.Services.Configuration
         // If assigning ID to logged in person creating configuration
         //private string _userId;
         //public void SetUserId(string userId) => _userId = userId;
-        public async Task<bool> CreateConfigurationAsync(ConfigurationCreate model)
+        public async Task<ConfigurationCreatedResp> CreateConfigurationAsync(ConfigurationCreate model)
         {
+            var response = new ConfigurationCreatedResp();
             var entity = new ConfigurationEntity
             {
                 Name = model.Name,
@@ -27,8 +29,9 @@ namespace GrooveHT.Server.Services.Configuration
                 StartDate = DateTimeOffset.Now,
             };
             _context.Configurations.Add(entity);
-            var numberOfChanges = await _context.SaveChangesAsync();
-            return numberOfChanges == 1;
+            response.IsSuccessful = await _context.SaveChangesAsync() == 1;
+            response.CreatedConfigId = entity.Id;
+            return response;
         }
 
 
@@ -48,7 +51,10 @@ namespace GrooveHT.Server.Services.Configuration
 
         public async Task<ConfigurationDetail> GetConfigurationByIdAsync(int id)
         {
-            var entity = await _context.Configurations.FindAsync(id);
+            var entity = await _context.Configurations
+                .Include(x => x.Habit)
+                .Include(x => x.Frequency)
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (entity is null)
             {
                 return null;
@@ -59,7 +65,9 @@ namespace GrooveHT.Server.Services.Configuration
                 Id = entity.Id,
                 Name = entity.Name,
                 HabitId = entity.HabitId,
+                HabitName = entity.Habit.HabitTitle,
                 FrequencyId = entity.FrequencyId,
+                Frequency = entity.Frequency.Frequency,
                 StartDate = entity.StartDate,
             };
 
@@ -69,7 +77,7 @@ namespace GrooveHT.Server.Services.Configuration
         public async Task<bool> UpdateConfigurationAsync(ConfigurationEdit model)
         {
             if (model == null) return false;
-            var entity = await _context.Configurations.FindAsync(model);
+            var entity = await _context.Configurations.FindAsync(model.Id);
             entity.Name = model.Name;
             entity.HabitId = model.HabitId;
             entity.FrequencyId = model.FrequencyId;

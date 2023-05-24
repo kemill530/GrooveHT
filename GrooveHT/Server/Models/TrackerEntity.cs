@@ -10,7 +10,7 @@ namespace GrooveHT.Server.Models
 
         [ForeignKey(nameof(ConfigurationEntity))]
         public int ConfigId { get; set; }
-        public virtual ConfigurationEntity ConfigurationEntity { get; set; }
+        public virtual ConfigurationEntity Configuration { get; set; }
 
         [Required]
         public bool TaskCompleted { get; set; }
