@@ -8,8 +8,8 @@ namespace GrooveHT.Shared.Models.Tracker
 {
     public class TrackerCreate
     {
-        public int ConfigId { get; set; }
+        public int ConfigurationId { get; set; }
         public bool TaskCompleted { get; set; }
-        //public string Notes { get; set; }
+        public string Notes { get; set; }
     }
 }

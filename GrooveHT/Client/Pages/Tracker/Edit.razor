@@ -5,7 +5,7 @@
 @inject HttpClient http
 @inject NavigationManager navigation
 
-<h3>TRACKER EDIT: Tracker @model.ConfigId</h3>
+<h3>TRACKER EDIT: Tracker @model.ConfigurationId</h3>
 @if (errorMessage != null)
 {
     <h5 class="text-danger">@errorMessage</h5>
@@ -15,10 +15,10 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <label>Tracker</label>
-        <InputSelect class="form-control" @bind-Value="model.ConfigId">
+        <InputSelect class="form-control" @bind-Value="model.ConfigurationId ">
             @foreach (var tracker in trackers)
             {
-                <option value="@tracker.Id">@tracker.ConfigId</option>
+                <option value="@tracker.Id">@tracker.ConfigurationName</option>
             }
         </InputSelect>
         <button type="submit" class="btn btn-primary btn-block mt-5"></button>
@@ -29,6 +29,7 @@
 
 
 @code {
+    public int Id { get; set; }
     private TrackerCreate model = new();
     private IEnumerable<TrackerListItem> trackers;
     private string errorMessage;

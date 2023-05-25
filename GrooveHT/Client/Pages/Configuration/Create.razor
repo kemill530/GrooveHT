@@ -38,7 +38,7 @@ else
             <InputSelect class="form-control" @bind-Value="model.FrequencyId">
                 @foreach (var frequency in frequencies)
                 {
-                    <option value="@frequency.Id">@frequency.Frequency</option>
+                    <option value="@frequency.Id">@frequency.FrequencyType</option>
                 }
             </InputSelect>
             

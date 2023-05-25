@@ -16,7 +16,7 @@ namespace GrooveHT.Server.Services.Frequency
         {
             var entity = new FrequencyEntity
             {
-                Frequency = model.Frequency,
+                FrequencyType = model.FrequencyType,
             };
             _context.Frequencies.Add(entity);
             var numberOfChanges = await _context.SaveChangesAsync();
@@ -31,7 +31,7 @@ namespace GrooveHT.Server.Services.Frequency
                     new FrequencyListItem
                     {
                         Id = entity.Id,
-                        Frequency = entity.Frequency
+                        FrequencyType = entity.FrequencyType
                     });
             return await frequencyQuery.ToListAsync();
         }
@@ -47,7 +47,7 @@ namespace GrooveHT.Server.Services.Frequency
             var frequencyDetail = new FrequencyDetail
             {
                 Id = entity.Id,
-                Frequency = entity.Frequency,
+                FrequencyType = entity.FrequencyType,
             };
 
             return frequencyDetail;

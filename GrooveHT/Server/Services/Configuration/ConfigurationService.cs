@@ -67,7 +67,7 @@ namespace GrooveHT.Server.Services.Configuration
                 HabitId = entity.HabitId,
                 HabitName = entity.Habit.HabitTitle,
                 FrequencyId = entity.FrequencyId,
-                Frequency = entity.Frequency.Frequency,
+                FrequencyType = entity.Frequency.FrequencyType,
                 StartDate = entity.StartDate,
             };
 

@@ -10,6 +10,6 @@ namespace GrooveHT.Shared.Models.Frequency
     public class FrequencyCreate
     {
         [Required]
-        public string Frequency { get; set; }
+        public string FrequencyType { get; set; }
     }
 }

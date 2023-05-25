@@ -6,7 +6,7 @@
 @using Microsoft.AspNetCore.Authorization;
 @inject NavigationManager navigation
 
-<h3>Tracker</h3>
+<h3>Daily Tracker</h3>
 
 @if (errorMessage != null)
 {
@@ -17,12 +17,21 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
         <label>Configuration</label>
-        <InputSelect class="form-control" @bind-Value="model.ConfigId">
+        <InputSelect class="form-control" @bind-Value="model.ConfigurationId ">
             @foreach (var configuration in configurations)
             {
                 <option value="@configuration.Id">@configuration.Name</option>
             }
         </InputSelect>
+
+        <label class="form-check-label" for="flexCheckDefault">Task Completed</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+        </div>
+
+        <label>Daily Notes</label>
+        <InputTextArea class="form-group" @bind-Value="model.Notes">
+        </InputTextArea>
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
 
     </EditForm>
@@ -49,5 +58,5 @@
         {
             errorMessage = "Could not create your tracker right now. Please try again later.";
         }
-    }  
+    }
 }

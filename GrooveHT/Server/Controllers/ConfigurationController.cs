@@ -41,7 +41,7 @@ namespace GrooveHT.Server.Controllers
             var response = await _configurationService.CreateConfigurationAsync(model);
             if (response.IsSuccessful)
             {
-                bool trackerCreated = await _trackerService.CreateTrackerAsync(new TrackerCreate() {ConfigId = response.CreatedConfigId});
+                bool trackerCreated = await _trackerService.CreateTrackerAsync(new TrackerCreate() {ConfigurationId = response.CreatedConfigId});
                 if(trackerCreated)
                 {
                     return Ok();

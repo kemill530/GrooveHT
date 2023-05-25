@@ -9,6 +9,6 @@ namespace GrooveHT.Shared.Models.Frequency
     public class FrequencyListItem
     {
         public int Id { get; set; }
-        public string Frequency { get; set; }
+        public string FrequencyType { get; set; }
     }
 }

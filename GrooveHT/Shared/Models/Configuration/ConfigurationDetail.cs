@@ -13,7 +13,7 @@ namespace GrooveHT.Shared.Models.Configuration
         public int HabitId { get; set; }
         public string HabitName { get; set; }
         public int FrequencyId { get; set; }
-        public string Frequency { get; set; }
+        public string FrequencyType { get; set; }
         public DateTimeOffset StartDate { get; set; }
     }
 }

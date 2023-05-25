@@ -13,11 +13,11 @@ namespace GrooveHT.Server.Services.Tracker
             _context = context;
         }
 
-        public async Task<bool> CreateTrackerAsync(TrackerCreate model)
+        public async Task<bool> CreateTrackerAsync(TrackerCreate request)
         {
             var entity = new TrackerEntity
             {
-                ConfigId = model.ConfigId,
+                ConfigurationId = request.ConfigurationId,
                 TaskCompleted = false,
                 Notes = ""
             };
@@ -30,18 +30,21 @@ namespace GrooveHT.Server.Services.Tracker
         {
             var trackerQuery =
                 _context.Trackers
+                .Include(x => x.Configuration)
                 .Select(entity =>
                     new TrackerListItem
                     {
                         Id = entity.Id,
-                        ConfigId = entity.ConfigId,
+                        ConfigurationName = entity.Configuration.Name,
                     });
             return await trackerQuery.ToListAsync();
         }
 
         public async Task<TrackerDetail> GetTrackerByIdAsync(int id)
         {
-            var entity = await _context.Trackers.FindAsync(id);
+            var entity = await _context.Trackers
+                .Include(x => x.Configuration)
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return null;
@@ -50,8 +53,9 @@ namespace GrooveHT.Server.Services.Tracker
             var trackerDetail = new TrackerDetail
             {
                 Id = entity.Id,
-                ConfigId = entity.ConfigId,
-                TaskCompleted = false,
+                ConfigurationId = entity.ConfigurationId,
+                ConfigurationName = entity.Configuration.Name,
+                TaskCompleted = entity.TaskCompleted,
                 Notes = entity.Notes,
             };
 
