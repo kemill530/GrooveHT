@@ -11,16 +11,11 @@ namespace GrooveHT.Server.Models
         [ForeignKey(nameof(ConfigurationEntity))]
         public int ConfigurationId { get; set; }
         public virtual ConfigurationEntity Configuration { get; set; }
-        //[ForeignKey(nameof(HabitEntity))]
-        //public string HabitName { get; set; }
-        //public virtual HabitEntity Habit { get; set;}
-
-        //[ForeignKey(nameof(FrequencyEntity))]
-        //public string FrequencyType { get; set; }
-        //public virtual FrequencyEntity Frequency { get; set;}
 
         [Required]
         public bool TaskCompleted { get; set; }
+        [Required]
+        public DateTime Date { get; set; }           
 
         public string Notes { get; set; }
     }

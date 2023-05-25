@@ -19,6 +19,7 @@ namespace GrooveHT.Server.Services.Tracker
             {
                 ConfigurationId = request.ConfigurationId,
                 TaskCompleted = false,
+                Date = DateTime.UtcNow,
                 Notes = ""
             };
             _context.Trackers.Add(entity);
@@ -36,6 +37,24 @@ namespace GrooveHT.Server.Services.Tracker
                     {
                         Id = entity.Id,
                         ConfigurationName = entity.Configuration.Name,
+                        Date = entity.Date
+                    });
+            return await trackerQuery.ToListAsync();
+        }
+        public async Task<IEnumerable<TrackerListItem>> GetTrackersByConfigurationIdAsync(TrackerHistoryList request)
+        {
+            var trackerQuery =
+                _context.Trackers
+                .Include(x => x.Configuration)
+                .Where(entity => entity.ConfigurationId == request.ConfigurationId )
+                .Select(entity =>
+                    new TrackerListItem
+                    {
+                        Id = entity.Id,
+                        ConfigurationName = entity.Configuration.Name,
+                        TaskCompleted = entity.TaskCompleted,
+                        Date = entity.Date
+
                     });
             return await trackerQuery.ToListAsync();
         }
@@ -56,11 +75,14 @@ namespace GrooveHT.Server.Services.Tracker
                 ConfigurationId = entity.ConfigurationId,
                 ConfigurationName = entity.Configuration.Name,
                 TaskCompleted = entity.TaskCompleted,
+                Date = entity.Date,
                 Notes = entity.Notes,
             };
 
             return trackerDetail;
         }
+
+
 
         public async Task<bool> UpdateTrackerAsync(TrackerEdit model)
         {
