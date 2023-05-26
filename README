@@ -1,0 +1,24 @@
+MISSION STATEMENT
+Groove is a personal habit tracker to help you get into the groove of your desired habit. When trying to develop a new routine or habit, it’s important to be intentional about it. That’s where Groove comes into place. The creation of Groove was born out of a new appreciation for setting goals and achieving said goals step by step instead of getting lost in the big picture. I knew this would be an app I would want to use, and figured there would be no better reason to create something.
+
+DESCRIPTION
+Groove allows you to create customizable habits and frequencies with which you build you own Habit configuration. You are then able to create a "Daily Log" tracker each time you complete your habit for the day. You also have access to see the history of your daily logs to keep track of said habit.
+
+MVP FEATURES
+●	Create a Profile
+●	Create a custom habit.
+●	Configure the details of habit to track.
+●	Update habit configuration
+●	Track habit with daily input
+●	Enter notes in tracker with daily input.
+●	Track more than one habit at a time
+
+FUTURE VERSION 2.0 FEATURES
+●	Connect with other Users and share your progress.
+●	User-exclusive created Habits
+
+USEFUL LINKS:
+dbDiagram: https://dbdiagram.io/d/643d81166b31947051bd791b
+Trello Board: https://trello.com/invite/b/Y3DQ45cC/ATTI5f2f4ab5d3d41c9ddfdc7d63fae03a13267BEC13/groove
+Planning Doc: https://docs.google.com/document/d/1ZPTTW6imftV4Fl9mb76wIHV2Uz1spuyeBqehXTdlWHo/edit?usp=sharing
+
