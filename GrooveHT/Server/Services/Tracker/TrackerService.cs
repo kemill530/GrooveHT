@@ -18,7 +18,7 @@ namespace GrooveHT.Server.Services.Tracker
             var entity = new TrackerEntity
             {
                 ConfigurationId = request.ConfigurationId,
-                TaskCompleted = false,
+                TaskCompleted = true,
                 Date = DateTime.UtcNow,
                 Notes = ""
             };

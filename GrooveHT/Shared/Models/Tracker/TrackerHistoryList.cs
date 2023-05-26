@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GrooveHT.Shared.Models.Tracker
 {
-    public class TrackerCreate
+    public class TrackerHistoryList
     {
+        [Required]
         public int ConfigurationId { get; set; }
-        public bool TaskCompleted { get; set; }
-        public DateTime Date { get; set; }
-        public string Notes { get; set; }
     }
 }

@@ -16,7 +16,7 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Configuration</th>
+                <th>Configurations</th>
                 <th>&nbsp;</th>
             </tr>
         </thead>
@@ -25,11 +25,10 @@ else
             {
                 <tr>
                     <td><strong>@configuration.Id</strong></td>
-                    <td><strong>@configuration.Name</strong></td>
+                    <td>@configuration.Name</td>
                     <td>
                         <a href=@($"/api/configuration/{configuration.Id}")>Details</a>
                         <a href=@($"/api/configuration/edit/{configuration.Id}")>Edit</a>
-                        <a href=@($"/api/configuration/delete/{configuration.Id}")>Delete</a>
                     </td>
                 </tr>
             }

@@ -12,6 +12,7 @@ namespace GrooveHT.Shared.Models.Tracker
         public int ConfigurationId { get; set; }
         public string ConfigurationName { get;set; }
         public bool TaskCompleted { get; set; }
+        public DateTime Date { get; set; }
         public string Notes { get; set; }
     }
 }
