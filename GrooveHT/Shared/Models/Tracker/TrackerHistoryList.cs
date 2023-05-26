@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GrooveHT.Shared.Models.Frequency
+namespace GrooveHT.Shared.Models.Tracker
 {
-    public class FrequencyCreate
+    public class TrackerHistoryList
     {
         [Required]
-        public string FrequencyType { get; set; }
+        public int ConfigurationId { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace GrooveHT.Server.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Frequency { get; set; }
+        public string FrequencyType { get; set; }
     }
 }

@@ -1,11 +1,11 @@
-﻿@page "/frequency"
+﻿@page "/api/frequency"
 @using GrooveHT.Shared.Models.Frequency
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
 @inject HttpClient http
 
 <h3>Frequencies</h3>
-<a href="/frequency/create">Create a new frequency type</a>
+<a href="/api/frequency/create">Create a new frequency type</a>
 
 @if (_frequencies == null)
 {
@@ -25,7 +25,7 @@ else
             {
                 <tr>
                     <td>@frequency.Id</td>
-                    <td>@frequency.Frequency</td>
+                    <td>@frequency.FrequencyType</td>
                 </tr>
             }
         </tbody>
@@ -37,6 +37,6 @@ else
     private IEnumerable<FrequencyListItem> _frequencies;
     protected override async Task OnInitializedAsync()
     {
-        _frequencies = await http.GetFromJsonAsync<List<FrequencyListItem>>("/frequency");
+        _frequencies = await http.GetFromJsonAsync<List<FrequencyListItem>>("/api/frequency");
     }
 }

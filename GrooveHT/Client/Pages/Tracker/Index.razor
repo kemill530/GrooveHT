@@ -1,13 +1,14 @@
-﻿@page "/tracker"
+﻿@page "/api/tracker"
 @using GrooveHT.Shared.Models.Tracker
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
 @inject HttpClient http
 
-<h3>Tracker</h3>
+<h3>Log your Daily Habit</h3>
 
-<a href="/tracker/create">Create a Tracker</a>
+<a href="/api/tracker/create">Log here</a>
 
+<h5>Log History</h5>
 @if (_trackers == null)
 {
     <p><em>Loading...</em></p>
@@ -17,24 +18,28 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Tracker</th>
-                <th>&nbsp;</th>
+                <th>Habit Configuration</th>
+                <th>Date Completed</th>
+                <th>Notes</th>
+                <th>Id</th>
             </tr>
         </thead>
+        <tbody>
+            @foreach (var tracker in _trackers)
+            {
+                <tr>
+                    
+                    <td>@tracker.ConfigurationName Tracker</td>
+                    <td>@tracker.Date</td>
+                    <td>@tracker.Notes</td>
+                    <td>@tracker.Id</td>
+                    <td>
+                        <a href=@($"/api/tracker/{tracker.Id}")>Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
-    <tbody>
-        @foreach (var tracker in _trackers)
-        {
-            <tr>
-                <td><strong>@tracker.Id</strong></td>
-                <td>
-                    <a href=@($"tracker/{tracker.Id}")>Details</a>
-                    <a href=@($"tracker/edit/{tracker.Id}")>Edit</a>
-                    <a href=@($"tracker/delete/{tracker.Id}")>Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
 }
 
 @code {
@@ -42,7 +47,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _trackers = await http.GetFromJsonAsync<List<TrackerListItem>>("tracker");
+        _trackers = await http.GetFromJsonAsync<List<TrackerListItem>>("api/tracker");
     }
 
 }

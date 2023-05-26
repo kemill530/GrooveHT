@@ -1,0 +1,76 @@
+﻿@page "/api/configuration/delete/{Id:int}"
+@using GrooveHT.Shared.Models.Configuration
+@using GrooveHT.Shared.Models.Frequency;
+@using GrooveHT.Shared.Models.Habit;
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>Delete Configuration: @Configuration.Name</h3>
+@if(Message != null)
+{
+    <h2 class="text-danger">@Message</h2>
+}
+
+@if (Configuration != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <span>Configuration #@Configuration.Id</span>
+                <span class="text-muted"><strong>@Configuration.Name</strong></span>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">@Configuration.HabitId</h4>
+                <h4 class="card-title">@Configuration.FrequencyId</h4>
+            </div>
+            <div class="card-footer text-muted d-flex justify-content-between">
+                <span class="text-left">Created: @Configuration.StartDate</span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <div class="text-center justify-content-between w-50">
+                <a href=@($"/api/configuration/edit/{Id}") class="btn btn-outline-primary">Back to Index</a>
+                <a href="#" @onclick="HandleClick" class="btn btn-danger text-white">Delete Configuration!</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private ConfigurationDetail Configuration { get; set; }
+    public string Message { get; set; }
+    private IEnumerable<HabitListItem> habits { get; set; }
+    private IEnumerable<FrequencyListItem> frequencies { get; set; }
+    private string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Configuration = await http.GetFromJsonAsync<ConfigurationDetail>($"/api/configuration{Id}");
+    }
+
+    private async void HandleClick()
+    {
+        //call a Delete request on our API
+        var deleteRes = await http.DeleteAsync($"/api/configuration/{Id}");
+        //check to make sure the call was a success
+
+        //if successful, naviagate back to index.razor
+        if(deleteRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/api/configuration");
+        }
+        // if not successful, give the user an error message
+        else
+        {
+            Message = "Failed to delete your configuration.";
+        }
+    }
+
+}

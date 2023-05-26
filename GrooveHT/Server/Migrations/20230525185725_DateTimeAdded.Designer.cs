@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GrooveHT.Server.Data.Migrations
+namespace GrooveHT.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230522160305_UpdatedConfigurationWithName")]
-    partial class UpdatedConfigurationWithName
+    [Migration("20230525185725_DateTimeAdded")]
+    partial class DateTimeAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -268,7 +268,7 @@ namespace GrooveHT.Server.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Frequency")
+                    b.Property<string>("FrequencyType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -344,8 +344,11 @@ namespace GrooveHT.Server.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ConfigId")
+                    b.Property<int>("ConfigurationId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Notes")
                         .IsRequired()
@@ -356,7 +359,7 @@ namespace GrooveHT.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConfigId");
+                    b.HasIndex("ConfigurationId");
 
                     b.ToTable("Trackers");
                 });
@@ -500,21 +503,21 @@ namespace GrooveHT.Server.Data.Migrations
 
             modelBuilder.Entity("GrooveHT.Server.Models.ConfigurationEntity", b =>
                 {
-                    b.HasOne("GrooveHT.Server.Models.FrequencyEntity", "FrequencyEntity")
+                    b.HasOne("GrooveHT.Server.Models.FrequencyEntity", "Frequency")
                         .WithMany()
                         .HasForeignKey("FrequencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GrooveHT.Server.Models.HabitEntity", "HabitEntity")
+                    b.HasOne("GrooveHT.Server.Models.HabitEntity", "Habit")
                         .WithMany()
                         .HasForeignKey("HabitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FrequencyEntity");
+                    b.Navigation("Frequency");
 
-                    b.Navigation("HabitEntity");
+                    b.Navigation("Habit");
                 });
 
             modelBuilder.Entity("GrooveHT.Server.Models.ProfileEntity", b =>
@@ -530,13 +533,13 @@ namespace GrooveHT.Server.Data.Migrations
 
             modelBuilder.Entity("GrooveHT.Server.Models.TrackerEntity", b =>
                 {
-                    b.HasOne("GrooveHT.Server.Models.ConfigurationEntity", "ConfigurationEntity")
+                    b.HasOne("GrooveHT.Server.Models.ConfigurationEntity", "Configuration")
                         .WithMany()
-                        .HasForeignKey("ConfigId")
+                        .HasForeignKey("ConfigurationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ConfigurationEntity");
+                    b.Navigation("Configuration");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

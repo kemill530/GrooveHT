@@ -1,0 +1,75 @@
+﻿@page "/api/tracker/edit/{Id:int}"
+@using GrooveHT.Shared.Models.Configuration;
+@using GrooveHT.Shared.Models.Tracker
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+@inject HttpClient http
+@inject NavigationManager navigation
+
+<h3>TRACKER EDIT: Tracker @model.ConfigurationId</h3>
+
+@if (errorMessage != null)
+{
+    <h5 class="text-danger">@errorMessage</h5>
+}
+@if (_trackers == null)
+{
+    <p><em>Loading...</em></p>
+}
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+            <div class="form-group">
+                <label>Configuration to Track</label>
+                <InputSelect class="form-control" @bind-Value="model.ConfigurationId">
+                    @foreach (var configuration in _configurations)
+                    {
+                        <option value="@configuration.Id">@configuration.Name</option>
+                    }
+                </InputSelect>
+            </div>
+
+        <label class="form-check-label" for="flexCheckDefault">Task Completed</label><Edit />
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" @bind-value="model.TaskCompleted" id="flexCheckDefault">
+        </div>
+
+        <label>Daily Notes</label>
+        <InputText class="form-control" @bind-Value="model.Notes">
+        </InputText>
+        <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private TrackerEdit model { get; set; }
+    private IEnumerable<ConfigurationListItem> _configurations { get; set; }
+    private IEnumerable<TrackerListItem> _trackers { get; set; }
+    private string errorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _trackers = await http.GetFromJsonAsync<IEnumerable<TrackerListItem>>("/api/tracker");
+        _configurations = await http.GetFromJsonAsync<IEnumerable<ConfigurationListItem>>("/api/configuration");
+        model = http.GetFromJsonAsync<TrackerEdit>($"/api/tracker/{Id}").Result;
+
+    }
+
+    private async void HandleSubmit()
+    {
+        var createdRes = await http.PostAsJsonAsync<TrackerEdit>($"/api/tracker/edit/{Id}", model);
+        if (createdRes.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/api/tracker/{Id}");
+        }
+        else
+        {
+            errorMessage = "Could not edit your tracker right now. Please try again later.";
+        }
+    }
+}
+

@@ -13,13 +13,14 @@ namespace GrooveHT.Server.Services.Tracker
             _context = context;
         }
 
-        public async Task<bool> CreateTrackerAsync(TrackerCreate model)
+        public async Task<bool> CreateTrackerAsync(TrackerCreate request)
         {
             var entity = new TrackerEntity
             {
-                ConfigId = model.ConfigId,
-                TaskCompleted = false,
-                Notes = model.Notes,
+                ConfigurationId = request.ConfigurationId,
+                TaskCompleted = true,
+                Date = DateTime.UtcNow,
+                Notes = ""
             };
             _context.Trackers.Add(entity);
             var numberOfChanges = await _context.SaveChangesAsync();
@@ -30,18 +31,39 @@ namespace GrooveHT.Server.Services.Tracker
         {
             var trackerQuery =
                 _context.Trackers
+                .Include(x => x.Configuration)
                 .Select(entity =>
                     new TrackerListItem
                     {
                         Id = entity.Id,
-                        ConfigId = entity.ConfigId,
+                        ConfigurationName = entity.Configuration.Name,
+                        Date = entity.Date
+                    });
+            return await trackerQuery.ToListAsync();
+        }
+        public async Task<IEnumerable<TrackerListItem>> GetTrackersByConfigurationIdAsync(TrackerHistoryList request)
+        {
+            var trackerQuery =
+                _context.Trackers
+                .Include(x => x.Configuration)
+                .Where(entity => entity.ConfigurationId == request.ConfigurationId )
+                .Select(entity =>
+                    new TrackerListItem
+                    {
+                        Id = entity.Id,
+                        ConfigurationName = entity.Configuration.Name,
+                        TaskCompleted = entity.TaskCompleted,
+                        Date = entity.Date
+
                     });
             return await trackerQuery.ToListAsync();
         }
 
         public async Task<TrackerDetail> GetTrackerByIdAsync(int id)
         {
-            var entity = await _context.Trackers.FindAsync(id);
+            var entity = await _context.Trackers
+                .Include(x => x.Configuration)
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return null;
@@ -50,13 +72,17 @@ namespace GrooveHT.Server.Services.Tracker
             var trackerDetail = new TrackerDetail
             {
                 Id = entity.Id,
-                ConfigId = entity.ConfigId,
-                TaskCompleted = false,
+                ConfigurationId = entity.ConfigurationId,
+                ConfigurationName = entity.Configuration.Name,
+                TaskCompleted = entity.TaskCompleted,
+                Date = entity.Date,
                 Notes = entity.Notes,
             };
 
             return trackerDetail;
         }
+
+
 
         public async Task<bool> UpdateTrackerAsync(TrackerEdit model)
         {

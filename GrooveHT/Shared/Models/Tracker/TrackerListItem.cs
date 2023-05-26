@@ -9,6 +9,10 @@ namespace GrooveHT.Shared.Models.Tracker
     public class TrackerListItem
     {
         public int Id { get; set; }
-        public int ConfigId { get; set; }
+        public string ConfigurationName { get; set; }
+        public bool TaskCompleted { get; set; }
+        public DateTime Date { get; set; }
+
+        public string Notes { get; set; }
     }
 }

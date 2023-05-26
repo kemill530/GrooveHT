@@ -1,4 +1,4 @@
-﻿@page "/frequency/create"
+﻿@page "/api/frequency/create"
 @using GrooveHT.Shared.Models.Frequency;
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
@@ -16,7 +16,7 @@
         <ValidationSummary />
         <div class="form-group">
             <label>Name</label>
-            <InputText class="form-control" @bind-Value="model.Frequency" />
+            <InputText class="form-control" @bind-Value="model.FrequencyType" />
         </div>
         <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
 
@@ -27,10 +27,10 @@
     private string errorMessage;
     private async void HandleSubmit()
     {
-        var createRes = await http.PostAsJsonAsync<FrequencyCreate>("/frequency", model);
+        var createRes = await http.PostAsJsonAsync<FrequencyCreate>("/api/frequency", model);
         if (createRes.IsSuccessStatusCode)
         {
-            navigation.NavigateTo("/frequency");
+            navigation.NavigateTo("/api/frequency");
         }
         else
         {

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GrooveHT.Server.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class HabitController : ControllerBase
     {
